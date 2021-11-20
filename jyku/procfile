@@ -1,2 +1,2 @@
-worker: YOUR_COMMAND
+web: node app.js
 
