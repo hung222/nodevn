@@ -6,6 +6,6 @@ app.get('/', function (req, res) {
 });
 
 // use port 3000 unless there exists a preconfigured port
-var port = process.env.port || 3000;
+const port = process . env . PORT || 8001 ;
 
 app.listen(port);
