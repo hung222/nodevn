@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+var expres = require("express");
+var app = express();
+app set("view engine","ejs");
+app set("views","/.views");
+app.listen(process.env.PORT || 3000);
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'TIKIYU' });
+app.get("/",function (req ,res){
+      res.render("trang chu");
 });
-
-module.exports = router;
+ 
