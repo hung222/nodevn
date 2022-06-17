@@ -5,6 +5,6 @@ app set = ("views","./views");
 app.listen(process.env.PORT || 5000);
 
 app.get("/",function (req ,res){
-      res.render("trang chủ web");
+      res.render("trang chủ");
 });
  
