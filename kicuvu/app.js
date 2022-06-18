@@ -56,3 +56,12 @@ var validate = function(req, res, next) {
 
 app.get('/', validate, function (req, res) {
   // ...
+<!-- Show the result -->
+<!-- ... -->
+
+<!-- Error handling -->
+<% if (locals.error) { %>
+  <div class="alert alert-danger">
+    <p class="lead"><%= error %></p>
+  </div>
+<% } %>
