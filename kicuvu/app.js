@@ -1,41 +1,42 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+var express = require("express");
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// Set template engine
+app.set('view engine', 'ejs')
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Bind the app to a specified port
+var port = process.env.PORT || 3000;
+app.listen(port);
+console.log("Listening on port " + port);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Super simple algorithm to find largest prime <= n
+var calculatePrime = function(n){
+  var prime = 1;
+  for (var i = n; i > 1; i--) {
+    var is_prime = true;
+    for (var j = 2; j < i; j++) {
+      if (i % j == 0) {
+        is_prime = false;
+        break;
+      }
+    }
+    if (is_prime) {
+      prime = i;
+      break;
+    }
+  }
+  return prime;
+}
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Set up the GET route
+app.get('/', function (req, res) {
+  if(req.query.n) {
+    // Calculate prime and render view
+    var prime = calculatePrime(req.query.n);
+    res.render('index', { n: req.query.n, prime: prime});
+  }
+  else {
+    // Render view without prime
+    res.render('index', {});
+  }
 });
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
