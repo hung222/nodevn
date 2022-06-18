@@ -121,3 +121,23 @@ var cacheView = function(req, res, next) {
 
 app.get('/', validate, cacheView, function (req, res) {
   // ...
+app.post('/', function (req, res) {
+  mc.delete('_view_cache_/?n=' + req.body.n, function(err, val){/* handle error */});
+  likes[req.query.n] = (likes[req.query.n] || 0) + 1
+  res.redirect('/?n=' + req.query.n)
+});
+var session = require('express-session');
+var MemcachedStore = require('connect-memjs')(session);
+
+// Session config
+app.use(session({
+  secret: 'ClydeIsASquirrel',
+  resave: 'false',
+  saveUninitialized: 'false',
+  store: new MemcachedStore({
+    servers: [process.env.MEMCACHIER_SERVERS],
+    prefix: '_session_'
+  })
+}));
+
+//...
