@@ -40,3 +40,19 @@ app.get('/', function (req, res) {
     res.render('index', {});
   }
 });
+// ...
+
+var validate = function(req, res, next) {
+  if(req.query.n) {
+    number = parseInt(req.query.n, 10);
+    if(isNaN(number) || number < 1 || number > 10000){
+      res.render('index', {error: 'Please submit a valid number between 1 and 10000.'});
+      return;
+    }
+    req.query.n = number;
+  }
+  next();
+}
+
+app.get('/', validate, function (req, res) {
+  // ...
