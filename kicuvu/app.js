@@ -75,3 +75,29 @@ var mc = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
 })
 
 // ...
+app.get('/', validate, function (req, res) {
+  if(req.query.n) {
+    var prime;
+    var prime_key = 'prime.' + req.query.n;
+    // Look in cache
+    mc.get(prime_key, function(err, val) {
+      if(err == null && val != null) {
+        // Found it!
+        prime = parseInt(val)
+      }
+      else {
+        // Prime not in cache (calculate and store)
+        prime = calculatePrime(req.query.n)
+        mc.set(prime_key, '' + prime, {expires:0}, function(err, val){/* handle error */})
+      }
+      // Render view with prime
+      res.render('index', { n: req.query.n, prime: prime });
+    })
+  }
+  else {
+    // Render view without prime
+    res.render('index', {});
+  }
+});
+
+// ...
