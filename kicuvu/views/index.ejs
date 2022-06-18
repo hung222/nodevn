@@ -55,3 +55,17 @@ app.get('/', function (req, res) {
 <% } %>
 
 <!-- ... --
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Like storage (in a serious app you should use a permanent storage like a database)
+var likes = {}
+
+app.post('/', function (req, res) {
+  likes[req.query.n] = (likes[req.query.n] || 0) + 1
+  res.redirect('/?n=' + req.query.n)
+});
+
+// ...
+res.render('index', { n: req.query.n, prime: prime, likes: likes[req.query.n] || 0 });
